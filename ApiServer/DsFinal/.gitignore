@@ -78,4 +78,4 @@ application.properties
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
 
-.firebase_config.json
+firebase_config.json
