@@ -20,6 +20,8 @@ import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger.web.ApiKeyVehicle;
+import springfox.documentation.swagger.web.SecurityConfiguration;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
@@ -73,6 +75,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport{
     	return new ApiKey("idToken", "Authorization", "header"); 
     }
     
+   
     private SecurityContext securityContext() { 
         return springfox
                 .documentation
@@ -88,7 +91,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport{
         AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything"); 
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1]; 
         authorizationScopes[0] = authorizationScope; 
-        return Arrays.asList(new SecurityReference("idToken", authorizationScopes)); 
+        return Arrays.asList(new SecurityReference("AUTHORIZATION", authorizationScopes)); 
     }
 	
 }
