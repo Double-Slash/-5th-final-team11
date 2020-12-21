@@ -11,8 +11,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-typealias RetroLiveData<T> = LiveData<ApiStatus<T>>
-typealias MutableRetroLiveData<T> = MutableLiveData<ApiStatus<T>>
 object RestClient {
 
     private val retrofit =

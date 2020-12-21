@@ -73,3 +73,7 @@ local.properties
 ### User Config ###
 application.properties
 /target/
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
