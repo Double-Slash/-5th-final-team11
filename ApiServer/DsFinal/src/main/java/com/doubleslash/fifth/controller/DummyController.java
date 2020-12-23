@@ -22,6 +22,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 
 @Api(value = "Dummy", description = "API")
 @Controller
@@ -33,7 +34,7 @@ public class DummyController {
 	@Autowired
 	UserService userService;
 	
-	@ApiOperation(value = "Firebase Token Verification Test")
+	@ApiOperation(value = "Firebase Token Verification Test", authorizations = { @Authorization(value="idToken")})
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "Verification Success"),
 		@ApiResponse(code = 401, message = "Unauthorized")
