@@ -34,7 +34,7 @@ public class DummyController {
 	@Autowired
 	UserService userService;
 	
-	@ApiOperation(value = "Firebase Token Verification Test", authorizations = { @Authorization(value="idToken")})
+	@ApiOperation(value = "Firebase Token Verification Test", notes="authorize value: Bearer idToken 입력 후 실행", authorizations = { @Authorization(value="idToken")})
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "Verification Success"),
 		@ApiResponse(code = 401, message = "Unauthorized")
