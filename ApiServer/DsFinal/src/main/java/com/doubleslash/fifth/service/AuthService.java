@@ -1,6 +1,7 @@
 package com.doubleslash.fifth.service;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,19 +29,21 @@ public class AuthService {
 	}
 	
 	//idToken 검증
-	public boolean verifyToken(HttpServletRequest request) {
+	public boolean verifyToken(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		String idToken = getBearerToken(request);
 		FirebaseToken decodedToken = null;
 		String uid = "";
 		
 		//토큰이 존재하지 않음
 		if(idToken == null) {
+			response.sendError(401, "Unauthorized");
 			return false;
 		}
 		try{
 			decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 		}catch(FirebaseAuthException e) {
 			//토큰이 유효하지 않음
+			response.sendError(401, "Unauthorized");
 			return false;
 		}
 	

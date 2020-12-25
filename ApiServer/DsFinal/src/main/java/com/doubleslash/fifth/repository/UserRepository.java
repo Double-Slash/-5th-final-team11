@@ -12,6 +12,6 @@ import com.google.common.base.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<UserVO, Integer>{
 
-	public Optional<UserVO> findByUid(String uid);
+	//public Optional<UserVO> findByUid(String uid);
 	
 }

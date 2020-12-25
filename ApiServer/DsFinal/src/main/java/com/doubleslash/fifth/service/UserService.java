@@ -12,18 +12,16 @@ public class UserService {
 
 	@Autowired
 	UserRepository userRepository;
-	
-	//User 중복 체크 & User 추가
-	public boolean insertUser(String uid) {
-		Optional<UserVO> users = userRepository.findByUid(uid);
-		if(users.isPresent()) {
-			return false;
-		}else {
+
+	// User 중복 체크 & User 추가
+	public void insertUser(String uid){
+		try {
 			UserVO user = new UserVO();
 			user.setUid(uid);
 			userRepository.save(user);
-			return true;
+		}catch(Exception e) {
+			return;
 		}
 	}
-	
+
 }
