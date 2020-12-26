@@ -18,7 +18,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
 
-@Api(value = "Dummy", description = "API")
+@Api(value = "Dummy", description = "Firebase idToken 검증 Test API")
 @Controller
 public class DummyController {
 

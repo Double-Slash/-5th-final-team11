@@ -33,7 +33,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport{
             .apiInfo(getApiInfo())
             .select()
             .apis(RequestHandlerSelectors.basePackage("com.doubleslash.fifth.controller")) //Controller Path
-            .paths(PathSelectors.ant("/test/**")) //URL Path
+            .paths(PathSelectors.ant("/**")) //URL Path
             .build()
             .securityContexts(Arrays.asList(securityContext()))
             .securitySchemes(Arrays.asList(apiKey()));
