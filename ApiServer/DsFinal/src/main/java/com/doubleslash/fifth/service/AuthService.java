@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.doubleslash.fifth.dto.CustomTokenDTO;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
@@ -89,7 +90,7 @@ public class AuthService {
 	}
 	
 	//Firebase Custom Token 발급
-	public String getFirebaseCustomToken(String accessToken) {
+	public CustomTokenDTO getFirebaseCustomToken(String accessToken, HttpServletResponse response) throws Exception{
 		String email = verifyKakaoAccessToken(accessToken);
 		if(email != null) {
 			CreateRequest request = new CreateRequest();
@@ -97,13 +98,17 @@ public class AuthService {
 			try {
 				UserRecord userRecord = FirebaseAuth.getInstance().createUser(request);
 				String customToken = FirebaseAuth.getInstance().createCustomToken(userRecord.getUid());
-				return customToken;
+				CustomTokenDTO dto = new CustomTokenDTO();
+				dto.setCustomToken(customToken);
+				return dto;
 			}
 			catch(Exception e) {
 				//이메일 중복
+				response.sendError(401, "Unauthorized");
 				return null;
 			}
 		}
+		response.sendError(401, "Unauthorized");
 		return null;
 	}
 	
