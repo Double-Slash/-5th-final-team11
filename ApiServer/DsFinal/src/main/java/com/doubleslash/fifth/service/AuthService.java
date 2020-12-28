@@ -18,7 +18,6 @@ import com.doubleslash.fifth.dto.CustomTokenDTO;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
-import com.google.firebase.auth.UserRecord;
 import com.google.firebase.auth.UserRecord.CreateRequest;
 
 @Service
@@ -83,7 +82,10 @@ public class AuthService {
 			JSONObject obj = (JSONObject) parser.parse(result);		
 			JSONObject obj2 = (JSONObject) obj.get("kakao_account");
 			
-			return obj2.get("email").toString();
+			String id = obj2.get("id").toString();
+			String email = obj2.get("email").toString();
+			
+			return id+"#"+email;
 		}catch(Exception e) {
 			//Access Token 오류
 			return null;
@@ -91,26 +93,25 @@ public class AuthService {
 	}
 	
 	//Firebase Custom Token 발급
-	public CustomTokenDTO getFirebaseCustomToken(String accessToken, HttpServletResponse response) throws Exception{
-		String email = verifyKakaoAccessToken(accessToken);
-		if(email != null) {
-			CreateRequest request = new CreateRequest();
-			request.setEmail(email);
-			try {
-				UserRecord userRecord = FirebaseAuth.getInstance().createUser(request);
-				String customToken = FirebaseAuth.getInstance().createCustomToken(userRecord.getUid());
-				CustomTokenDTO dto = new CustomTokenDTO();
-				dto.setCustomToken(customToken);
-				return dto;
-			}
-			catch(Exception e) {
-				//이메일 중복
-				response.sendError(401, "Unauthorized");
-				return null;
-			}
+	public CustomTokenDTO getFirebaseCustomToken(String accessToken) throws Exception{
+		String info = verifyKakaoAccessToken(accessToken);
+		if(info == null) return null;
+		
+		String temp[] = info.split("#");
+		String id = temp[0];
+		String email = temp[1];
+
+		CreateRequest request = new CreateRequest();
+		request.setEmail(email);
+		try {
+			//신규 사용자 생성
+			FirebaseAuth.getInstance().createUser(request);
 		}
-		response.sendError(401, "Unauthorized");
-		return null;
+		catch(Exception e) {
+			
+		}
+		//커스텀 토큰 생성
+		String customToken = FirebaseAuth.getInstance().createCustomToken(id);
+		return new CustomTokenDTO(customToken);
 	}
-	
 }

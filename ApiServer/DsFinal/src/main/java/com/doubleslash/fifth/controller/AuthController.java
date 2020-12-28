@@ -30,14 +30,19 @@ public class AuthController {
 	@ApiOperation(value = "Kakao Access Token Verification & Get Firebase Custom Token")
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "Verification & Get Custom Token Success"),
-		@ApiResponse(code = 201, message = "Firebase User Creation"),
-		@ApiResponse(code = 401, message = "Unauthorized")
+		@ApiResponse(code = 400, message = "Kakao AccessToken Error")
 	})
 	@PostMapping(value = "/kakao")
 	@ResponseBody
 	public CustomTokenDTO verifyKakao(@RequestBody AccessTokenDTO requestBody, HttpServletResponse response) throws Exception{
 		String accessToken = (String)requestBody.getAccessToken();
-		return authService.getFirebaseCustomToken(accessToken, response);
+		CustomTokenDTO dto = authService.getFirebaseCustomToken(accessToken);
+		if(dto != null) {
+			response.sendError(200, "Verification & Get Custom Token Success");
+		}else {
+			response.sendError(400, "Kakao AccessToken Error");
+		}
+		return dto;
 	}
 	
 }

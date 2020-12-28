@@ -16,8 +16,7 @@ public class UserService {
 	// User 중복 체크 & User 추가
 	public void insertUser(String uid){
 		try {
-			UserVO user = new UserVO();
-			user.setUid(uid);
+			UserVO user = new UserVO(uid);
 			userRepository.save(user);
 		}catch(Exception e) {
 			return;
