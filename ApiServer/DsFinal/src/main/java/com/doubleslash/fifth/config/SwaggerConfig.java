@@ -1,5 +1,6 @@
 package com.doubleslash.fifth.config;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -35,7 +36,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport{
             .apis(RequestHandlerSelectors.basePackage("com.doubleslash.fifth.controller")) //Controller Path
             .paths(PathSelectors.ant("/**")) //URL Path
             .build()
-            .securityContexts(Arrays.asList(securityContext()))
+            .securityContexts(securityContext())
             .securitySchemes(Arrays.asList(apiKey()));
     }
  
@@ -73,16 +74,21 @@ public class SwaggerConfig extends WebMvcConfigurationSupport{
     	return new ApiKey("idToken", "Authorization", "header"); 
     }
     
-   
-    private SecurityContext securityContext() { 
-        return springfox
-                .documentation
-                .spi.service
-                .contexts
-                .SecurityContext
-                .builder()
-                .securityReferences(defaultAuth()).forPaths(PathSelectors.any()).build(); 
-    } 
+    private List<SecurityContext> securityContext() { 
+    	List<SecurityContext> securityContexts = new ArrayList<>();
+    	String paths[] = {
+                   "/test"
+        };
+    	
+        for (String path: paths) {
+        	securityContexts.add(SecurityContext.builder()
+        			.securityReferences(defaultAuth())
+        			.forPaths(PathSelectors.ant(path))
+        			.build());
+        }
+        
+        return securityContexts;
+    }
 
 
 	List<SecurityReference> defaultAuth() { 
