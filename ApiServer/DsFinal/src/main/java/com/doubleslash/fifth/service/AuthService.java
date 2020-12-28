@@ -80,9 +80,10 @@ public class AuthService {
 			}
 			
 			JSONParser parser = new JSONParser();
-			JSONObject obj = (JSONObject) parser.parse(result);
+			JSONObject obj = (JSONObject) parser.parse(result);		
+			JSONObject obj2 = (JSONObject) obj.get("kakao_account");
 			
-			return obj.get("email").toString();			
+			return obj2.get("email").toString();
 		}catch(Exception e) {
 			//Access Token 오류
 			return null;
