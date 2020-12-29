@@ -1,11 +1,12 @@
 package com.doubleslash.fifth.service;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.doubleslash.fifth.repository.UserRepository;
 import com.doubleslash.fifth.vo.UserVO;
-import com.google.common.base.Optional;
 
 @Service
 public class UserService {
@@ -17,6 +18,23 @@ public class UserService {
 	public void insertUser(String uid){
 		try {
 			UserVO user = new UserVO(uid);
+			userRepository.save(user);
+		}catch(Exception e) {
+			return;
+		}
+	}
+	
+	// 닉네임 중복 확인
+	public UserVO nicknameCheck(String nickname) throws IOException {
+		UserVO user = userRepository.findByNickname(nickname);
+		return user;
+	}
+	
+	// 닉네임 등록 
+	public void updateNickname(String uid, String nickname) {
+		try {
+			UserVO user = userRepository.findByUid(uid);
+			user.setNickname(nickname);
 			userRepository.save(user);
 		}catch(Exception e) {
 			return;

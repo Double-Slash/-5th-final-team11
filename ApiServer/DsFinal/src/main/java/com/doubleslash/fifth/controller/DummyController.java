@@ -31,7 +31,8 @@ public class DummyController {
 	@GetMapping(value = "/test")
 	@ResponseBody
 	public String authTest(HttpServletRequest request, HttpServletResponse response) throws Exception{
-		authService.verifyToken(request, response);
+		if(authService.verifyToken(request) == null) 
+			response.sendError(401, "Unauthorized");
 		return "{}";
 	}
 	

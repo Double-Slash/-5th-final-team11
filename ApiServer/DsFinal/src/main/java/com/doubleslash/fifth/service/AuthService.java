@@ -6,7 +6,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -38,28 +37,26 @@ public class AuthService {
 	}
 	
 	//idToken 검증
-	public boolean verifyToken(HttpServletRequest request, HttpServletResponse response) throws Exception{
+	public String verifyToken(HttpServletRequest request) throws Exception{
 		String idToken = getBearerToken(request);
 		FirebaseToken decodedToken = null;
 		String uid = "";
 		
 		//토큰이 존재하지 않음
 		if(idToken == null) {
-			response.sendError(401, "Unauthorized");
-			return false;
+			return null;
 		}
 		try{
 			decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 		}catch(FirebaseAuthException e) {
 			//토큰이 유효하지 않음
-			response.sendError(401, "Unauthorized");
-			return false;
+			return null;
 		}
 	
 		uid = decodedToken.getUid();	
 		userService.insertUser(uid);
 		
-		return true;
+		return uid;
 	}
 	
 	//Kakao Access Token 검증

@@ -77,7 +77,8 @@ public class SwaggerConfig extends WebMvcConfigurationSupport{
     private List<SecurityContext> securityContext() { 
     	List<SecurityContext> securityContexts = new ArrayList<>();
     	String paths[] = {
-                   "/test"
+    			"/test",
+                "/user/**"
         };
     	
         for (String path: paths) {

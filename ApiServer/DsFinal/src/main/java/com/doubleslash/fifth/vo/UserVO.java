@@ -25,4 +25,5 @@ public class UserVO {
 	@NonNull
 	private String uid;
 	
+	private String nickname;
 }
