@@ -79,13 +79,12 @@ public class AuthService {
 			}
 			
 			JSONParser parser = new JSONParser();
-			JSONObject obj = (JSONObject) parser.parse(result);		
-			JSONObject obj2 = (JSONObject) obj.get("kakao_account");
+			JSONObject mainObj = (JSONObject) parser.parse(result);		
+			JSONObject subObj = (JSONObject) mainObj.get("kakao_account");
 			
-			String id = obj2.get("id").toString();
-			String email = obj2.get("email").toString();
+			String email = subObj.get("email").toString();
 			
-			return id+"#"+email;
+			return email;
 		}catch(Exception e) {
 			//Access Token 오류
 			return null;
@@ -94,24 +93,23 @@ public class AuthService {
 	
 	//Firebase Custom Token 발급
 	public CustomTokenDTO getFirebaseCustomToken(String accessToken) throws Exception{
-		String info = verifyKakaoAccessToken(accessToken);
-		if(info == null) return null;
-		
-		String temp[] = info.split("#");
-		String id = temp[0];
-		String email = temp[1];
+		String email = verifyKakaoAccessToken(accessToken);
+		if(email == null) return null;
 
+		String uId;
 		CreateRequest request = new CreateRequest();
 		request.setEmail(email);
+
 		try {
-			//신규 사용자 생성
-			FirebaseAuth.getInstance().createUser(request);
+			//신규 사용자의 uId 가져오기
+			uId = FirebaseAuth.getInstance().createUser(request).getUid();
 		}
-		catch(Exception e) {
-			
+		catch(FirebaseAuthException e) {
+			//기존 사용자의 uId 가져오기
+			uId = FirebaseAuth.getInstance().getUserByEmail(email).getUid();
 		}
 		//커스텀 토큰 생성
-		String customToken = FirebaseAuth.getInstance().createCustomToken(id);
+		String customToken = FirebaseAuth.getInstance().createCustomToken(uId);
 		return new CustomTokenDTO(customToken);
 	}
 }

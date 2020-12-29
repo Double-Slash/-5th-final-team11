@@ -38,7 +38,7 @@ public class AuthController {
 		String accessToken = (String)requestBody.getAccessToken();
 		CustomTokenDTO dto = authService.getFirebaseCustomToken(accessToken);
 		if(dto != null) {
-			response.sendError(200, "Verification & Get Custom Token Success");
+			response.setStatus(200);
 		}else {
 			response.sendError(400, "Kakao AccessToken Error");
 		}
