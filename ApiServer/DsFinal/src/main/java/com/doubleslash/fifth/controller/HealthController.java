@@ -4,6 +4,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import io.swagger.annotations.Api;
+
+@Api(value = "Health", description = "EB 서버 상태 체크 API")
 @Controller
 public class HealthController {
 
