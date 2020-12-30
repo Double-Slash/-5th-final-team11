@@ -21,8 +21,8 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @Api(value = "User", description = "User API")
-@RequestMapping("/user")
 @Controller
+@RequestMapping(value = "/user")
 public class UserController {
 
 	@Autowired
@@ -42,13 +42,7 @@ public class UserController {
 	@ResponseBody
 	public void registerUser(HttpServletRequest request, HttpServletResponse response, @RequestBody NicknameDTO requestBody) throws Exception {
 		String nickname = requestBody.getNickname();
-		String uid = "";
-		
-		if(authService.verifyToken(request) == null) {
-			response.sendError(401,"Unauthorized");
-		}else {
-			uid = authService.verifyToken(request);
-		}
+		String uid = authService.verifyToken(request);
 		
 		if(nickname == null) {
 			response.sendError(400, "Nickname input Error");

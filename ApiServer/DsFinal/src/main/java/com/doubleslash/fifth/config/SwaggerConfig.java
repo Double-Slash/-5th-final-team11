@@ -8,8 +8,11 @@ import java.util.Set;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+
+import com.doubleslash.fifth.interceptor.AuthInterceptor;
 
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -98,5 +101,23 @@ public class SwaggerConfig extends WebMvcConfigurationSupport{
         authorizationScopes[0] = authorizationScope; 
         return Arrays.asList(new SecurityReference("idToken", authorizationScopes)); 
     }
+
+	@Bean
+	public AuthInterceptor authInterceptor() {
+		return new AuthInterceptor();
+	}
+	
+	//interceptor 등록
+	@Override
+	protected void addInterceptors(InterceptorRegistry registry) {
+		String[] includePathList = {
+				"/test",
+                "/user/**"
+		};
+		registry.addInterceptor(authInterceptor())
+			.addPathPatterns(includePathList);
+	}
+	
+	
 	
 }
