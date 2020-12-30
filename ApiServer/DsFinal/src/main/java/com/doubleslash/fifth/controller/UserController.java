@@ -40,7 +40,7 @@ public class UserController {
 	})
 	@PostMapping(value = "/register")
 	@ResponseBody
-	public void registerUser(HttpServletRequest request, HttpServletResponse response, @RequestBody NicknameDTO requestBody) throws Exception {
+	public String registerUser(HttpServletRequest request, HttpServletResponse response, @RequestBody NicknameDTO requestBody) throws Exception {
 		String nickname = requestBody.getNickname();
 		String uid = authService.verifyToken(request);
 		
@@ -53,5 +53,6 @@ public class UserController {
 			response.sendError(409,"Duplicate Nickname");
 		}
 		userService.updateNickname(uid, nickname);
+		return "{}";
 	}
 }
