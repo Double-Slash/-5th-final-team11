@@ -30,14 +30,16 @@ public class UserService {
 		return user;
 	}
 	
-	// 닉네임 등록 
-	public void updateNickname(String uid, String nickname) {
+	// user 등록 
+	public void registerUser(String uid, String nickname, Float drink, int hangover) {
 		try {
 			UserVO user = userRepository.findByUid(uid);
 			user.setNickname(nickname);
+			user.setDrink(drink);
+			user.setHangover(hangover);
 			userRepository.save(user);
 		}catch(Exception e) {
-			return;
+			System.out.println("user 등록 에러 : " + e);
 		}
 	}
 

@@ -7,15 +7,16 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Data;
-import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
 
 @Entity
 @Table(name = "Users")
 @Data
+@NoArgsConstructor
+@RequiredArgsConstructor
 public class UserVO {
 	
 	@Id
@@ -26,4 +27,9 @@ public class UserVO {
 	private String uid;
 	
 	private String nickname;
+	
+	private Float drink;
+	
+	private Integer hangover;
+	
 }
