@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +36,7 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	
+	@SuppressWarnings("unchecked")
 	@ApiOperation(value = "Nickname Check")
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "Nickname Check Success"),
@@ -44,13 +46,18 @@ public class UserController {
 	@ResponseBody
 	public String nicknameCheck(HttpServletResponse response, @PathVariable("nickname") String nickname) throws IOException {
 		UserVO nicknameChk = userService.nicknameCheck(nickname);
+		JSONObject jsonObj = new JSONObject();
+		
 		if(nicknameChk == null) {
 			response.setStatus(200);
-			return "true";
+			jsonObj.put("result", "true");
 		}else {
 			response.setStatus(409);
-			return "false";
+			jsonObj.put("result", "false");
 		}
+		
+		String result = jsonObj.toString();
+		return result;
 	}
 
 	@ApiOperation(value = "Register User", notes="drink(float): 주량, hangover(int): 평균숙취")
