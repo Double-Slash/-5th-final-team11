@@ -77,3 +77,10 @@ application.properties
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+<<<<<<< HEAD
+=======
+
+# JDT-specific (Eclipse Java Develpment Tools)
+.classpath
+firebase_config.json
+>>>>>>> feature/apiserver/auth
