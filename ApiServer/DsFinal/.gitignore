@@ -79,6 +79,5 @@ application.properties
 !.elasticbeanstalk/*.global.yml
 
 # JDT-specific (Eclipse Java Develpment Tools)
-ApiServer/DsFinal/.classpath
-
+.classpath
 firebase_config.json
